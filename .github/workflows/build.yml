@@ -33,7 +33,7 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
     paths:
-      - "sonar/"
+      - "vite-project/"
 
 jobs:
   sonarqube:
@@ -48,7 +48,7 @@ jobs:
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
         with:
-          projectBaseDir: ./sonar
+          projectBaseDir: ./vite-project
           args: >-
             -Dsonar.projectKey=${{ env.SONAR_PROJECT_KEY }}
             -Dsonar.organization=${{ env.SONAR_ORGANIZATION }}
