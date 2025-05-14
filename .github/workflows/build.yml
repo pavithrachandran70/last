@@ -32,7 +32,6 @@ jobs:
 
 # Uses SonarCloud GitHub Action to run static code analysis on your project.
       - name: SonarQube Scan
-        working-directory: ../../vite-project
         uses: SonarSource/sonarqube-scan-action@v5
         with:
           projectBaseDir: ./vite-project
