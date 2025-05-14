@@ -1,31 +1,10 @@
-# sonar.projectKey=pavithrachandran70_components
-# sonar.organization=pavithrachandran70
-# sonar.host.url=https://sonarcloud.io
-
-
-# sonar.projectVersion=1.0
-# sonar.sourceEncoding=UTF-8
-
-# sonar.sources=./src
-# sonar.exclusions=/reportWebVitals.ts,/index.tsx
-
-# sonar.tests=./src
-# sonar.test.inclusions=/.test.tsx,/.test.ts
-# sonar.test.exclusions=/node_modules/,/.spec.ts,/.stories.tsx,/services/,coverage/**
-
-# sonar.language=ts
-# sonar.javascript.lcov.reportPaths=./coverage/lcov.info 
 
 
 
+name: Build 
 
 
-
-
-
-
-name: Build
-
+# This part tells GitHub to run the workflow only if:
 on:
   push:
     branches:
@@ -35,17 +14,25 @@ on:
     paths:
       - "vite-project/"
 
+
 jobs:
   sonarqube:
     name: SonarQube
     runs-on: windows-latest
 
+
+# It checks out your repo code.
+
+# fetch-depth: 0 means it fetches full git history — required for SonarQube to analyze code changes effectively.
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0  # For better analysis
 
+
+# Uses SonarCloud GitHub Action to run static code analysis on your project.
       - name: SonarQube Scan
+        working-directory: ../../vite-project
         uses: SonarSource/sonarqube-scan-action@v5
         with:
           projectBaseDir: ./vite-project
@@ -62,11 +49,19 @@ jobs:
             -Dsonar.test.exclusions=/node_modules/,/.spec.ts,/.stories.tsx,/services/,coverage/**
             -Dsonar.language=ts
             -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info
-            
+
+        # Secrets used
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        # A secret token stored securely in GitHub (used for authentication).
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}  
+          #  Identify your project and organization on SonarCloud.
           SONAR_PROJECT_KEY: pavithrachandran70_last
           SONAR_ORGANIZATION: pavithrachandran70
 
 
 
+
+# This GitHub Actions workflow runs a SonarCloud scan whenever code is pushed to the master branch or a 
+# PR affecting the vite-project/ is opened or updated. It checks out the code, runs a scan using SonarCloud,
+#  and reports issues, code smells, bugs, and test coverage. It focuses only on the vite-project folder and uses proper includes/excludes
+#  to control which files are analyzed.
